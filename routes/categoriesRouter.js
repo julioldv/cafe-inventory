@@ -4,7 +4,7 @@ import * as categoriesController from '../controllers/categoriesController.js';
 
 const validateCategoryId = param('categoryId')
   .isInt({ min: 1, max: 2147483647 })
-  .withMessage('El ID de la categoría no es válido')
+  .withMessage('Invalid ID')
   .bail()
   .toInt();
 
