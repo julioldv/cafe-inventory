@@ -8,6 +8,10 @@
   <body>
     <h1>All categories from Cafe Inventory</h1>
 
+    <% if (categories.length === 0) { %>
+        <p>No categories registered yet.</p>
+    <% } %>
+
     <% categories.forEach((item) => { %>
 
         <article>
