@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index Page</title>
+  </head>
+  <body>
+    <h1>All categories from Cafe Inventory</h1>
+
+    <% categories.forEach((item) => { %>
+
+        <article>
+            <div>
+                <h2><%= item.name %></h2>
+                <p><%= item.description %></p>
+            </div>
+        </article>
+
+    <% }); %>
+  </body>
+</html>
