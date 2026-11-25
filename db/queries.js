@@ -53,4 +53,23 @@ async function createCategory(categoryData) {
   return rows[0];
 }
 
-export { getAllCategories, getCategoryById, getItemsByCategoryId, getItemById, createCategory };
+async function createItem(itemData) {
+  const { name, category_id, quantity, unit } = itemData;
+
+  const { rows } = await pool.query(
+    `INSERT INTO items (name, category_id, quantity, unit)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [name, category_id, quantity, unit],
+  );
+
+  return rows[0];
+}
+export {
+  getAllCategories,
+  getCategoryById,
+  getItemsByCategoryId,
+  getItemById,
+  createCategory,
+  createItem,
+};

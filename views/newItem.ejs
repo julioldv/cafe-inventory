@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Item | Cafe Inventory</title>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Create inventory item</h1>
+        </header>
+
+        <% if (errors.length > 0) { %>
+            <section>
+                <h2>Please correct the following errors:</h2>
+
+                <ul>
+                    <% errors.forEach(error => { %>
+                        <li><%= error.msg %></li>
+                    <% }); %>
+                </ul>
+            </section>
+        <% } %>
+
+        <% if (categories.length === 0) { %>
+            <p>
+                You must create a category before adding inventory items.
+            </p>
+
+            <a href="/categories/new">Create category</a>
+
+        <% } else { %>
+            <form action="/items/new" method="POST">
+
+                <div>
+                    <label for="name">Name:</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="<%= values.name %>"
+                        maxlength="50"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="category_id">Category:</label>
+
+                    <select
+                        name="category_id"
+                        id="category_id"
+                        required
+                    >
+                        <option
+                            value=""
+                            <%= !categories.some(category =>
+                                String(category.id) === values.category_id
+                            ) ? 'selected' : '' %>
+                        >
+                            Select a category
+                        </option>
+
+                        <% categories.forEach(category => { %>
+                            <option
+                                value="<%= category.id %>"
+                                <%= String(category.id) === values.category_id
+                                    ? 'selected'
+                                    : '' %>
+                            >
+                                <%= category.name %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="quantity">Quantity:</label>
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        min="0"
+                        max="2147483647"
+                        step="1"
+                        value="<%= values.quantity %>"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="unit">Unit:</label>
+
+                    <select name="unit" id="unit" required>
+                        <option value="">Select a unit</option>
+
+                        <option
+                            value="g"
+                            <%= values.unit === 'g' ? 'selected' : '' %>
+                        >
+                            Grams (g)
+                        </option>
+
+                        <option
+                            value="ml"
+                            <%= values.unit === 'ml' ? 'selected' : '' %>
+                        >
+                            Milliliters (ml)
+                        </option>
+
+                        <option
+                            value="pcs"
+                            <%= values.unit === 'pcs' ? 'selected' : '' %>
+                        >
+                            Pieces (pcs)
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit">Create item</button>
+            </form>
+        <% } %>
+
+        <a href="/">Cancel</a>
+    </main>
+</body>
+</html>
