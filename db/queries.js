@@ -40,4 +40,17 @@ async function getItemById(id) {
   return rows[0];
 }
 
-export { getAllCategories, getCategoryById, getItemsByCategoryId, getItemById };
+async function createCategory(categoryData) {
+  const { name, description } = categoryData;
+
+  const { rows } = await pool.query(
+    `INSERT INTO categories (name, description)
+     VALUES ($1, $2)
+     RETURNING *`,
+    [name, description ?? null],
+  );
+
+  return rows[0];
+}
+
+export { getAllCategories, getCategoryById, getItemsByCategoryId, getItemById, createCategory };

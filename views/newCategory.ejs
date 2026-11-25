@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Category | Cafe Inventory</title>
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Create a new category</h1>
+            <p>Add a new category to your inventory.</p>
+        </header>
+
+        <% if (errors.length > 0) { %>
+            <section>
+                <h2>Please correct the following errors:</h2>
+
+                <ul>
+                    <% errors.forEach(error => { %>
+                        <li><%= error.msg %></li>
+                    <% }); %>
+                </ul>
+            </section>
+        <% } %>
+
+        <form action="/categories/new" method="POST">
+            <div>
+                <label for="name">Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="<%= values.name %>"
+                    maxlength="50"
+                    required
+                >
+            </div>
+
+            <div>
+                <label for="description">Description (optional):</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="4"
+                ><%= values.description %></textarea>
+            </div>
+
+            <button type="submit">Create category</button>
+        </form>
+
+        <a href="/">Back to home</a>
+    </main>
+</body>
+</html>
