@@ -6,7 +6,7 @@ async function getAllCategories(req, res) {
   res.render('index', { categories });
 }
 
-async function getItemsByCategory(req, res) {
+async function getCategoryDetails(req, res) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).send('Invalid category ID');
@@ -23,4 +23,4 @@ async function getItemsByCategory(req, res) {
   return res.render('category', { category, items });
 }
 
-export { getAllCategories, getItemsByCategory };
+export { getAllCategories, getCategoryDetails };

@@ -21,7 +21,10 @@
                 <ul>
                     <% items.forEach(item => { %>
                         <li>
-                            <%= item.name %> — <%= item.quantity %> <%= item.unit %>
+                            <a href="/items/<%= item.id%>">
+                                <%= item.name %>
+                            </a>
+                             — <%= item.quantity %> <%= item.unit %>
                         </li>
                     <% }); %>
                 </ul>

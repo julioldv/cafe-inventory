@@ -10,6 +10,6 @@ const validateCategoryId = param('categoryId')
 
 const categoriesRouter = Router();
 
-categoriesRouter.get('/:categoryId', validateCategoryId, categoriesController.getItemsByCategory);
+categoriesRouter.get('/:categoryId', validateCategoryId, categoriesController.getCategoryDetails);
 
 export { categoriesRouter };

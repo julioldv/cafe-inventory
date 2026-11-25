@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import { indexRouter } from './routes/indexRouter.js';
 import { categoriesRouter } from './routes/categoriesRouter.js';
+import { itemsRouter } from './routes/itemsRouter.js';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.set('view engine', 'ejs');
 
 app.use('/', indexRouter);
 app.use('/categories', categoriesRouter);
+app.use('/items', itemsRouter);
 
 const PORT = process.env.PORT ?? 3000;
 

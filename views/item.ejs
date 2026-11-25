@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= item.name %> | Cafe Inventory</title>
+</head>
+<body>
+    <main>
+        <a href="/categories/<%= item.category_id %>">
+            Back to <%= item.category_name %>
+        </a>
+
+        <header>
+            <h1><%= item.name %></h1>
+        </header>
+
+        <section>
+            <h2>Item details</h2>
+
+            <dl>
+                <dt>Category</dt>
+                <dd><%= item.category_name %></dd>
+
+                <dt>Available quantity</dt>
+                <dd><%= item.quantity %> <%= item.unit %></dd>
+            </dl>
+        </section>
+
+        <a href="/">All categories</a>
+    </main>
+</body>
+</html>

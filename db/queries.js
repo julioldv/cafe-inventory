@@ -21,4 +21,23 @@ async function getItemsByCategoryId(id) {
   return rows;
 }
 
-export { getAllCategories, getCategoryById, getItemsByCategoryId };
+async function getItemById(id) {
+  const { rows } = await pool.query(
+    `SELECT
+        i.id,
+        i.name,
+        i.quantity,
+        i.unit,
+        i.category_id,
+        c.name AS category_name
+     FROM items AS i
+     INNER JOIN categories AS c
+        ON i.category_id = c.id
+     WHERE i.id = $1`,
+    [id],
+  );
+
+  return rows[0];
+}
+
+export { getAllCategories, getCategoryById, getItemsByCategoryId, getItemById };
