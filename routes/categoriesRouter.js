@@ -5,11 +5,11 @@ import * as categoriesController from '../controllers/categoriesController.js';
 
 const validateCategoryId = param('categoryId')
   .isInt({ min: 1, max: 2147483647 })
-  .withMessage('Invalid ID')
+  .withMessage('Invalid category ID')
   .bail()
   .toInt();
 
-const validateCreateCategory = [
+const validateCategoryBody = [
   body('name')
     .isString()
     .withMessage('Name must be a string')
@@ -29,11 +29,25 @@ const validateCreateCategory = [
     .trim()
     .customSanitizer((value) => (value === '' ? null : value)),
 ];
-
 const categoriesRouter = Router();
 
 categoriesRouter.get('/new', categoriesController.getNewCategoryForm);
-categoriesRouter.post('/new', validateCreateCategory, categoriesController.createCategory);
+
+categoriesRouter.post('/new', validateCategoryBody, categoriesController.createCategory);
+
+categoriesRouter.get(
+  '/:categoryId/edit',
+  validateCategoryId,
+  categoriesController.getEditCategoryForm,
+);
+
+categoriesRouter.post(
+  '/:categoryId/edit',
+  validateCategoryId,
+  validateCategoryBody,
+  categoriesController.updateCategory,
+);
+
 categoriesRouter.get('/:categoryId', validateCategoryId, categoriesController.getCategoryDetails);
 
 export { categoriesRouter };

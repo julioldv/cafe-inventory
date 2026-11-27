@@ -65,6 +65,21 @@ async function createItem(itemData) {
 
   return rows[0];
 }
+
+async function updateCategory(id, categoryData) {
+  const { name, description } = categoryData;
+
+  const { rows } = await pool.query(
+    `UPDATE categories
+     SET name = $1, description = $2
+     WHERE id = $3
+     RETURNING *`,
+    [name, description ?? null, id],
+  );
+
+  return rows[0];
+}
+
 export {
   getAllCategories,
   getCategoryById,
@@ -72,4 +87,5 @@ export {
   getItemById,
   createCategory,
   createItem,
+  updateCategory,
 };

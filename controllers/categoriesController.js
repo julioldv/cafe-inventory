@@ -75,4 +75,97 @@ async function createCategory(req, res, next) {
   return res.redirect(303, '/');
 }
 
-export { getAllCategories, getCategoryDetails, getNewCategoryForm, createCategory };
+async function getEditCategoryForm(req, res) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).send('Invalid category ID');
+  }
+
+  const categoryId = req.params.categoryId;
+  const category = await db.getCategoryById(categoryId);
+
+  if (!category) {
+    return res.status(404).send('Category not found');
+  }
+
+  return res.render('editCategory', {
+    categoryId: category.id,
+    errors: [],
+    values: {
+      name: category.name,
+      description: category.description ?? '',
+    },
+  });
+}
+
+async function updateCategory(req, res) {
+  const errors = validationResult(req);
+  const validationErrors = errors.array();
+
+  const hasInvalidId = validationErrors.some((error) => error.location === 'params');
+
+  if (hasInvalidId) {
+    return res.status(400).send('Invalid category ID');
+  }
+
+  const categoryId = req.params.categoryId;
+
+  const values = {
+    name: typeof req.body?.name === 'string' ? req.body.name : '',
+    description: typeof req.body?.description === 'string' ? req.body.description : '',
+  };
+
+  if (!errors.isEmpty()) {
+    const category = await db.getCategoryById(categoryId);
+
+    if (!category) {
+      return res.status(404).send('Category not found');
+    }
+
+    return res.status(400).render('editCategory', {
+      categoryId,
+      errors: validationErrors,
+      values,
+    });
+  }
+
+  const categoryData = matchedData(req, {
+    locations: ['body'],
+    includeOptionals: true,
+  });
+
+  try {
+    const category = await db.updateCategory(categoryId, categoryData);
+
+    if (!category) {
+      return res.status(404).send('Category not found');
+    }
+
+    return res.redirect(303, `/categories/${category.id}`);
+  } catch (error) {
+    if (error.code === '23505' && error.constraint === 'categories_name_key') {
+      return res.status(409).render('editCategory', {
+        categoryId,
+        errors: [
+          {
+            msg: 'A category with this name already exists',
+            path: 'name',
+          },
+        ],
+        values,
+      });
+    }
+
+    throw error;
+  }
+}
+
+export {
+  getAllCategories,
+  getCategoryDetails,
+  getNewCategoryForm,
+  createCategory,
+  getEditCategoryForm,
+  updateCategory,
+};
